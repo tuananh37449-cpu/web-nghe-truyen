@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Nghe Truyện Mini</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #1e293b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            color: #38bdf8;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 20px;
+            gap: 20px;
+            padding-bottom: 120px; /* Tránh bị thanh player che khuất */
+        }
+
+        .story-list {
+            flex: 2;
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-list h2 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 8px;
+        }
+
+        .chapter-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: #0f172a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chapter-item:hover {
+            background: #334155;
+        }
+
+        .chapter-item.active {
+            border-left: 4px solid #38bdf8;
+            background: #1e293b;
+        }
+
+        .story-info {
+            flex: 1;
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            height: fit-content;
+        }
+
+        .story-info img {
+            width: 150px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .story-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .story-info p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* Thanh Player Cố Định Dưới Đáy */
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #1e293b;
+            border-top: 1px solid #334155;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .player-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 25%;
+        }
+
+        .player-left h4 {
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+            gap: 5px;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .player-controls button {
+            background: none;
+            border: none;
+            color: #f8fafc;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .player-controls button:hover {
+            color: #38bdf8;
+        }
+
+        .player-controls .play-btn {
+            background: #38bdf8;
+            color: #0f172a;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: #38bdf8;
+            border-radius: 3px;
+            width: 0%;
+        }
+
+        .time {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            min-width: 35px;
+        }
+
+        /* Responsive cho Mobile */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .player-left {
+                display: none;
+            }
+            .player-center {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-headphones"></i> AudioTruyen</h1>
+    </header>
+
+    <div class="container">
+        <div class="story-info">
+            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=500&q=80" alt="Bìa truyện">
+            <h3 id="story-title">Đắc Nhân Tâm (Bản Nghe)</h3>
+            <p>Tác giả: Dale Carnegie</p>
+        </div>
+
+        <div class="story-list">
+            <h2>Danh sách chương</h2>
+            <div id="playlist">
+                </div>
+        </div>
+    </div>
+
+    <div class="audio-player">
+        <div class="player-left">
+            <h4 id="current-playing-title">Chọn một chương để nghe</h4>
+        </div>
+
+        <div class="player-center">
+            <div class="player-controls">
+                <button id="prev-btn" onclick="prevChapter()"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="play-btn" id="play-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-icon"></i></button>
+                <button id="next-btn" onclick="nextChapter()"><i class="fa-solid fa-forward-step"></i></button>
+            </div>
+            <div class="progress-container">
+                <span class="time" id="current-time">00:00</span>
+                <div class="progress-bar" id="progress-bar" onclick="setProgress(event)">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span class="time" id="duration">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-element"></audio>
+
+    <script>
+        // Dữ liệu mẫu danh sách chương truyện
+        const chapters = [
+            { title: "Chương 1: Nghệ thuật ứng xử cơ bản", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+            { title: "Chương 2: Sáu cách tạo thiện cảm", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+            { title: "Chương 3: Hướng người khác theo suy nghĩ của bạn", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+            { title: "Chương 4: Chuyển hóa người khác mà không gây xúc phạm", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" }
+        ];
+
+        let currentTrack = 0;
+        const audioElement = document.getElementById('audio-element');
+        const playBtn = document.getElementById('play-icon');
+        const titleEl = document.getElementById('current-playing-title');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const playlistEl = document.getElementById('playlist');
+
+        // Khởi tạo danh sách chương lên giao diện
+        function loadPlaylist() {
+            playlistEl.innerHTML = '';
+            chapters.forEach((chapter, index) => {
+                const div = document.createElement('div');
+                div.classList.add('chapter-item');
+                if (index === currentTrack) div.classList.add('active');
+                div.innerHTML = `
+                    <span><i class="fa-solid fa-volume-high" style="margin-right: 10px; color: ${index === currentTrack ? '#38bdf8' : '#94a3b8'}"></i>${chapter.title}</span>
+                    <i class="fa-solid fa-play"></i>
+                `;
+                div.onclick = () => {
+                    currentTrack = index;
+                    playChapter();
+                };
+                playlistEl.appendChild(div);
+            });
+        }
+
+        // Phát chương hiện tại
+        function playChapter() {
+            audioElement.src = chapters[currentTrack].src;
+            titleEl.innerText = chapters[currentTrack].title;
+            audioElement.play();
+            playBtn.classList.replace('fa-play', 'fa-pause');
+            loadPlaylist();
+        }
+
+        // Nút Play / Pause
+        function togglePlay() {
+            if (audioElement.src === "") {
+                playChapter();
+                return;
+            }
+            if (audioElement.paused) {
+                audioElement.play();
+                playBtn.classList.replace('fa-play', 'fa-pause');
+            } else {
+                audioElement.pause();
+                playBtn.classList.replace('fa-pause', 'fa-play');
+            }
+        }
+
+        // Chuyển chương sau
+        function nextChapter() {
+            currentTrack = (currentTrack + 1) % chapters.length;
+            playChapter();
+        }
+
+        // Chuyển chương trước
+        function prevChapter() {
+            currentTrack = (currentTrack - 1 + chapters.length) % chapters.length;
+            playChapter();
+        }
+
+        // Cập nhật thanh tiến trình thời gian
+        audioElement.addEventListener('timeupdate', (e) => {
+            const { currentTime, duration } = e.target;
+            if (duration) {
+                const progressPercent = (currentTime / duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+
+                // Định dạng thời gian (Phút:Giây)
+                let currentMinutes = Math.floor(currentTime / 60);
+                let currentSeconds = Math.floor(currentTime % 60);
+                if (currentSeconds < 10) currentSeconds = `0${currentSeconds}`;
+                currentTimeEl.innerText = `${currentMinutes}:${currentSeconds}`;
+
+                let durationMinutes = Math.floor(duration / 60);
+                let durationSeconds = Math.floor(duration % 60);
+                if (durationSeconds < 10) durationSeconds = `0${durationSeconds}`;
+                durationEl.innerText = `${durationMinutes}:${durationSeconds}`;
+            }
+        });
+
+        // Tua khi click vào thanh progress
+        function setProgress(e) {
+            const width = progressBar.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audioElement.duration;
+            audioElement.currentTime = (clickX / width) * duration;
+        }
+
+        // Tự động chuyển chương tiếp theo khi nghe xong
+        audioElement.addEventListener('ended', nextChapter);
+
+        // Chạy lần đầu để hiển thị playlist
+        loadPlaylist();
+    </script>
+</body>
+</html>
