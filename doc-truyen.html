@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đọc Truyện & Nghe Audio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; padding-bottom: 110px; }
+        header { background-color: #1e293b; padding: 12px 20px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid #334155; }
+        header a { color: #38bdf8; text-decoration: none; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 1.3rem; color: #38bdf8; margin-bottom: 15px; text-align: center; }
+        .chapter-content { font-family: 'Merriweather', serif; font-size: 1.05rem; line-height: 1.8; color: #e2e8f0; }
+
+        /* Thanh Audio Player cố định dưới đáy */
+        .audio-player {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: #1e293b; border-top: 1px solid #334155;
+            padding: 12px 20px; display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+        }
+        .player-info { font-size: 0.85rem; width: 30%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .player-controls { display: flex; align-items: center; gap: 20px; }
+        .player-controls button { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
+        .main-play-btn { background: #38bdf8 !important; color: #0f172a !important; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Quay lại trang chủ</a>
+    </header>
+
+    <div class="container">
+        <h1 id="chapter-title">Chương 1: Khởi đầu mới</h1>
+        <div class="chapter-content" id="chapter-text">
+            Linh khí trời đất bỗng nhiên biến đổi, dòng năng lượng cuồn cuộn đổ về từ hư không mở ra một kỷ nguyên mới. Giữa khung cảnh hỗn loạn và sự trỗi dậy của vô số thế lực cổ xưa, nhân vật chính mang trong mình bí mật động trời bước ra từ cõi sương mù, từng bước đạp đổ chông gai, nghịch thiên thay đổi vận mệnh...
+        </div>
+    </div>
+
+    <!-- Thanh Audio điều khiển phía dưới -->
+    <div class="audio-player">
+        <div class="player-info" id="audio-title">Đang phát: Chương 1 - Bắc Hầu Thế Tử</div>
+        <div class="player-controls">
+            <button onclick="togglePlay()"><i class="fa-solid fa-play" id="play-icon"></i> Phát Audio</button>
+        </div>
+        <div style="width: 30%; text-align: right;">
+            <span style="font-size: 0.8rem; color: #94a3b8;">Web Audio Player</span>
+        </div>
+    </div>
+
+    <audio id="audio-elem" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <script>
+        const audio = document.getElementById('audio-elem');
+        const playIcon = document.getElementById('play-icon');
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playIcon.className = "fa-solid fa-pause";
+            } else {
+                audio.pause();
+                playIcon.className = "fa-solid fa-play";
+            }
+        }
+    </script>
+</body>
+</html>
