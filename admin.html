@@ -28,9 +28,7 @@
         h2 { font-size: 1.25rem; color: #0f172a; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         h2 i { color: #ef4444; }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
+        .form-group { margin-bottom: 16px; }
 
         label {
             display: block;
@@ -47,7 +45,6 @@
             border-radius: 8px;
             font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.2s;
             background: #f8fafc;
         }
 
@@ -78,13 +75,11 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: background 0.2s;
             box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
         }
 
         .btn-submit:hover { background: #dc2626; }
 
-        /* Danh sách truyện đã đăng mẫu */
         .story-manage-list {
             display: flex;
             flex-direction: column;
@@ -135,12 +130,11 @@
 
     <div class="container">
         
-        <!-- Form đăng/thêm truyện mới -->
         <div class="admin-card">
-            <h2><i class="fa-solid fa-circle-plus"></i> Đăng Truyện / Thêm Chương Mới</h2>
+            <h2><i class="fa-solid fa-circle-plus"></i> Đăng Truyện Mới</h2>
             
             <div class="alert-success" id="alert-box">
-                <i class="fa-solid fa-check-circle"></i> Đã lưu thông tin truyện thành công! (Mẫu giao diện quản lý cục bộ)
+                <i class="fa-solid fa-check-circle"></i> Đã thêm truyện thành công!
             </div>
 
             <form id="add-story-form" onsubmit="handleSubmit(event)">
@@ -156,7 +150,7 @@
                     </div>
                     <div class="form-group">
                         <label>Thể Loại</label>
-                        <input type="text" id="story-genre" placeholder="Huyền Huyễn, Phản Diện..." required>
+                        <input type="text" id="story-genre" placeholder="Huyền Huyễn..." required>
                     </div>
                 </div>
 
@@ -170,18 +164,13 @@
                     </div>
                     <div class="form-group">
                         <label>Link Ảnh Bìa (URL)</label>
-                        <input type="text" id="story-thumb" placeholder="Dán link ảnh vào đây..." required>
+                        <input type="text" id="story-thumb" placeholder="Dán link ảnh..." required>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Link File Audio (MP3)</label>
-                    <input type="text" id="story-audio" placeholder="Dán link nhạc/audio nghe thử..." required>
-                </div>
-
-                <div class="form-group">
-                    <label>Giới Thiệu / Nội Dung Tóm Tắt</label>
-                    <textarea id="story-desc" placeholder="Nhập tóm tắt nội dung truyện..." required></textarea>
+                    <label>Giới Thiệu Nội Dung</label>
+                    <textarea id="story-desc" placeholder="Tóm tắt nội dung..." required></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit">
@@ -190,14 +179,13 @@
             </form>
         </div>
 
-        <!-- Danh sách truyện đã quản lý -->
         <div class="admin-card">
-            <h2><i class="fa-solid fa-book-bookmark"></i> Danh Sách Truyện Đã Đăng</h2>
+            <h2><i class="fa-solid fa-book-bookmark"></i> Danh Sách Truyện</h2>
             <div class="story-manage-list" id="manage-list">
                 <div class="manage-item">
                     <div class="manage-info">
                         <div>Bắc Hầu Thế Tử: Ta là phản diện với thân thế nghịch thiên</div>
-                        <div>Tác giả: Bất Vũ Chi Tiêu &bull; 105 chương</div>
+                        <div>Tác giả: Bất Vũ Chi Tiêu &bull; Đang ra</div>
                     </div>
                     <div class="manage-actions">
                         <button class="btn-action btn-edit">Sửa</button>
@@ -212,17 +200,13 @@
     <script>
         function handleSubmit(event) {
             event.preventDefault();
-            
-            // Lấy giá trị từ form
             const title = document.getElementById('story-name').value;
             const author = document.getElementById('story-author').value;
             const listContainer = document.getElementById('manage-list');
-            
-            // Hiển thị thông báo thành công
             const alertBox = document.getElementById('alert-box');
+            
             alertBox.style.display = 'block';
 
-            // Thêm vào danh sách hiển thị giả lập bên dưới
             const newItem = document.createElement('div');
             newItem.className = 'manage-item';
             newItem.innerHTML = `
@@ -236,13 +220,9 @@
                 </div>
             `;
             listContainer.prepend(newItem);
-
-            // Reset form
             document.getElementById('add-story-form').reset();
             
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
         }
     </script>
 </body>
