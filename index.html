@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đọc & Nghe Truyện - Web Truyện Mạng</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Web Nghe & Đọc Truyện Mạng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -17,24 +17,6 @@
             --border-color: #334155;
         }
 
-        [data-theme="light"] {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-color: #1e293b;
-            --text-muted: #64748b;
-            --accent-color: #0284c7;
-            --border-color: #e2e8f0;
-        }
-
-        [data-theme="sepia"] {
-            --bg-color: #fbf0d9;
-            --card-bg: #f4e4bc;
-            --text-color: #5f4b32;
-            --text-muted: #8c7355;
-            --accent-color: #a0522d;
-            --border-color: #e6d2a5;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -45,7 +27,6 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            transition: background 0.3s, color 0.3s;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -53,111 +34,143 @@
 
         header {
             background-color: var(--card-bg);
-            padding: 1rem 1.5rem;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         header h1 {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .header-tools {
-            display: flex;
-            gap: 10px;
-        }
-
-        .tool-btn {
-            background: var(--border-color);
-            border: none;
-            color: var(--text-color);
-            padding: 6px 12px;
-            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85rem;
         }
 
         .container {
-            display: flex;
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             width: 100%;
             padding: 20px;
-            gap: 20px;
             flex: 1;
-            padding-bottom: 130px;
+            padding-bottom: 120px;
         }
 
-        /* Khu vực đọc nội dung chữ */
-        .reader-main {
-            flex: 3;
+        /* Giao diện 1: Trang Giới Thiệu Truyện */
+        #home-page {
+            display: block;
+        }
+
+        .story-header-card {
             background: var(--card-bg);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
         }
 
-        .reader-main h2 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--accent-color);
+        .story-thumb {
+            width: 160px;
+            height: 230px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 8px 12px rgba(0,0,0,0.3);
         }
 
-        .chapter-content {
-            font-family: 'Merriweather', serif;
-            font-size: 1.05rem;
-            line-height: 1.8;
-            margin-bottom: 30px;
+        .story-meta h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
         }
 
-        /* Sidebar danh sách chương */
-        .sidebar {
-            flex: 1.5;
+        .story-meta p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .intro-section {
             background: var(--card-bg);
             border-radius: 12px;
-            padding: 20px;
-            height: fit-content;
-            max-height: 500px;
-            overflow-y: auto;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
         }
 
-        .sidebar h3 {
-            font-size: 1rem;
+        .intro-section h3, .chapter-list-section h3 {
+            font-size: 1.1rem;
             margin-bottom: 12px;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 6px;
+            color: var(--accent-color);
         }
 
-        .chapter-link {
-            padding: 10px 12px;
-            margin-bottom: 6px;
+        .intro-content {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .chapter-list-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .chapter-row {
+            padding: 12px 15px;
             background: var(--bg-color);
-            border-radius: 6px;
+            margin-bottom: 8px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: 0.2s;
         }
 
-        .chapter-link:hover {
-            opacity: 0.8;
+        .chapter-row:hover {
+            background: var(--border-color);
         }
 
-        .chapter-link.active {
-            border-left: 3px solid var(--accent-color);
-            font-weight: 600;
+        /* Giao diện 2: Trang Đọc & Nghe Chương */
+        #reader-page {
+            display: none;
+        }
+
+        .back-btn {
+            background: var(--border-color);
+            border: none;
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .reader-box {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .reader-box h2 {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .chapter-text-content {
+            font-family: 'Merriweather', serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text-color);
         }
 
         /* Thanh Audio Player Cố Định Dưới Đáy */
@@ -168,11 +181,12 @@
             width: 100%;
             background: var(--card-bg);
             border-top: 1px solid var(--border-color);
-            padding: 12px 20px;
+            padding: 12px 25px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
         }
 
         .player-info {
@@ -194,7 +208,7 @@
         .player-controls {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .player-controls button {
@@ -205,11 +219,11 @@
             cursor: pointer;
         }
 
-        .player-controls .main-play {
-            background: var(--accent-color);
-            color: #fff;
-            width: 35px;
-            height: 35px;
+        .main-play-btn {
+            background: var(--accent-color) !important;
+            color: #0f172a !important;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -219,7 +233,7 @@
         .progress-box {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -241,13 +255,12 @@
             border-radius: 3px;
         }
 
-        /* Responsive cho Mobile */
+        /* Responsive di động */
         @media (max-width: 768px) {
-            .container {
+            .story-header-card {
                 flex-direction: column;
-            }
-            .sidebar {
-                max-height: 250px;
+                align-items: center;
+                text-align: center;
             }
             .player-info {
                 display: none;
@@ -258,39 +271,58 @@
         }
     </style>
 </head>
-<body data-theme="dark">
+<body>
 
     <header>
-        <h1><i class="fa-solid fa-book-open"></i> Đọc Truyện Online</h1>
-        <div class="header-tools">
-            <button class="tool-btn" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i> Giao diện</button>
-            <button class="tool-btn" onclick="adjustFont()"><i class="fa-solid fa-font"></i> Cỡ chữ</button>
-        </div>
+        <h1 onclick="goHome()"><i class="fa-solid fa-book-bookmark"></i> Truyện Hay 247</h1>
     </header>
 
     <div class="container">
-        <!-- Khung đọc chữ chính -->
-        <div class="reader-main">
-            <h2 id="chap-title">Đang tải chương...</h2>
-            <div class="chapter-content" id="chap-text">
-                Nội dung chương truyện sẽ hiển thị ở đây để bạn vừa có thể đọc lướt vừa kết hợp nghe âm thanh trực quan bên dưới.
+        <!-- TRANG CHỦ: GIỚI THIỆU TRUYỆN -->
+        <div id="home-page">
+            <div class="story-header-card">
+                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=500&q=80" alt="Bìa truyện" class="story-thumb">
+                <div class="story-meta">
+                    <h2>Linh Khí Khôi Phục Chi Liệt Thiên</h2>
+                    <p><strong>Tác giả:</strong> Sưu tầm</p>
+                    <p><strong>Thể loại:</strong> Tiên Hiệp, Đô Thị, Huyền Huyễn</p>
+                    <p><strong>Trạng thái:</strong> Đang ra</p>
+                    <button class="tool-btn" style="background:var(--accent-color); color:#0f172a; border:none; padding:10px 20px; border-radius:6px; font-weight:600; cursor:pointer; margin-top:10px;" onclick="openChapter(0)">
+                        <i class="fa-solid fa-play"></i> Nghe / Đọc Chương 1
+                    </button>
+                </div>
+            </div>
+
+            <div class="intro-section">
+                <h3>Giới thiệu nội dung</h3>
+                <div class="intro-content">
+                    Linh khí trời đất bỗng nhiên biến đổi, dòng năng lượng cuồn cuộn đổ về từ hư không mở ra một kỷ nguyên mới. Giữa khung cảnh hỗn loạn và sự trỗi dậy của vô số thế lực cổ xưa, nhân vật chính mang trong mình bí mật động trời bước ra từ cõi sương mù, từng bước đạp đổ chông gai, nghịch thiên thay đổi vận mệnh và tìm kiếm đỉnh cao của sức mạnh...
+                </div>
+            </div>
+
+            <div class="chapter-list-section">
+                <h3>Danh sách chương</h3>
+                <div id="home-chapter-list"></div>
             </div>
         </div>
 
-        <!-- Danh sách chương truyện -->
-        <div class="sidebar">
-            <h3>Danh sách chương</h3>
-            <div id="playlist"></div>
+        <!-- TRANG ĐỌC & NGHE CHƯƠNG -->
+        <div id="reader-page">
+            <button class="back-btn" onclick="goHome()"><i class="fa-solid fa-arrow-left"></i> Quay lại giới thiệu</button>
+            <div class="reader-box">
+                <h2 id="reader-title">Tên chương</h2>
+                <div class="chapter-text-content" id="reader-text">Nội dung văn bản...</div>
+            </div>
         </div>
     </div>
 
-    <!-- Thanh phát âm thanh -->
+    <!-- THANH PHÁT AUDIO DƯỚI ĐÁY -->
     <div class="audio-player">
-        <div class="player-info" id="player-title">Chọn chương để bắt đầu</div>
+        <div class="player-info" id="player-title">Chưa chọn chương</div>
         <div class="player-center">
             <div class="player-controls">
                 <button onclick="prevChapter()"><i class="fa-solid fa-backward-step"></i></button>
-                <button class="main-play" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-icon"></i></button>
+                <button class="main-play-btn" onclick="togglePlay()"><i class="fa-solid fa-play" id="play-icon"></i></button>
                 <button onclick="nextChapter()"><i class="fa-solid fa-forward-step"></i></button>
             </div>
             <div class="progress-box">
@@ -301,15 +333,14 @@
                 <span id="duration">00:00</span>
             </div>
         </div>
-        <div style="width: 25%; text-align: right;">
-            <button class="tool-btn" onclick="readByVoice()"><i class="fa-solid fa-microphone-lines"></i> Đọc giọng đọc</button>
+        <div style="width: 25%; text-align: right; font-size: 0.85rem; color: var(--text-muted);">
+            Audio Player
         </div>
     </div>
 
     <audio id="audio-elem"></audio>
 
     <script>
-        // Dữ liệu mẫu gồm cả Tiêu đề, Nội dung chữ và Link Audio (hoặc dùng Web Speech API)
         const storyData = [
             {
                 title: "Chương 1: Khởi đầu mới",
@@ -328,49 +359,48 @@
             }
         ];
 
-        let currentIndex = 0;
+        let currentIdx = 0;
         const audio = document.getElementById('audio-elem');
         const playIcon = document.getElementById('play-icon');
-        const chapTitle = document.getElementById('chap-title');
-        const chapText = document.getElementById('chap-text');
-        const playerTitle = document.getElementById('player-title');
-        const playlistEl = document.getElementById('playlist');
-        const progressFill = document.getElementById('progress-fill');
-        const progressBar = document.getElementById('progress-bar');
-        
-        let fontSizeLevel = 1; // 0: nhỏ, 1: vừa, 2: lớn
 
-        function renderPlaylist() {
-            playlistEl.innerHTML = '';
-            storyData.forEach((item, index) => {
+        // Tạo danh sách chương ở trang chủ
+        function renderHomeList() {
+            const listEl = document.getElementById('home-chapter-list');
+            listEl.innerHTML = '';
+            storyData.forEach((ch, idx) => {
                 const div = document.createElement('div');
-                div.className = `chapter-link ${index === currentIndex ? 'active' : ''}`;
-                div.innerHTML = `<span>${item.title}</span> <i class="fa-solid fa-chevron-right" style="font-size:0.75rem; color:var(--text-muted)"></i>`;
-                div.onclick = () => {
-                    currentIndex = index;
-                    loadChapter();
-                    playAudio();
-                };
-                playlistEl.appendChild(div);
+                div.className = 'chapter-row';
+                div.innerHTML = `<span>${ch.title}</span> <i class="fa-solid fa-headphones" style="color:var(--accent-color)"></i>`;
+                div.onclick = () => openChapter(idx);
+                listEl.appendChild(div);
             });
         }
 
-        function loadChapter() {
-            chapTitle.innerText = storyData[currentIndex].title;
-            chapText.innerText = storyData[currentIndex].text;
-            playerTitle.innerText = storyData[currentIndex].title;
-            audio.src = storyData[currentIndex].audio;
-            renderPlaylist();
-        }
-
-        function playAudio() {
+        // Mở chương đọc & nghe
+        function openChapter(index) {
+            currentIdx = index;
+            document.getElementById('home-page').style.display = 'none';
+            document.getElementById('reader-page').style.display = 'block';
+            
+            document.getElementById('reader-title').innerText = storyData[index].title;
+            document.getElementById('reader-text').innerText = storyData[index].text;
+            document.getElementById('player-title').innerText = storyData[index].title;
+            
+            audio.src = storyData[index].audio;
             audio.play();
             playIcon.classList.replace('fa-play', 'fa-pause');
+            window.scrollTo(0, 0);
+        }
+
+        // Quay về trang chủ giới thiệu
+        function goHome() {
+            document.getElementById('home-page').style.display = 'block';
+            document.getElementById('reader-page').style.display = 'none';
         }
 
         function togglePlay() {
             if (audio.paused) {
-                if(!audio.src) loadChapter();
+                if(!audio.src) openChapter(currentIdx);
                 audio.play();
                 playIcon.classList.replace('fa-play', 'fa-pause');
             } else {
@@ -380,59 +410,20 @@
         }
 
         function nextChapter() {
-            currentIndex = (currentIndex + 1) % storyData.length;
-            loadChapter();
-            playAudio();
+            currentIdx = (currentIdx + 1) % storyData.length;
+            openChapter(currentIdx);
         }
 
         function prevChapter() {
-            currentIndex = (currentIndex - 1 + storyData.length) % storyData.length;
-            loadChapter();
-            playAudio();
+            currentIdx = (currentIdx - 1 + storyData.length) % storyData.length;
+            openChapter(currentIdx);
         }
 
-        // Đổi giao diện (Dark / Light / Sepia)
-        function toggleTheme() {
-            const body = document.body;
-            const current = body.getAttribute('data-theme');
-            if (current === 'dark') {
-                body.setAttribute('data-theme', 'light');
-            } else if (current === 'light') {
-                body.setAttribute('data-theme', 'sepia');
-            } else {
-                body.setAttribute('data-theme', 'dark');
-            }
-        }
-
-        // Thay đổi cỡ chữ bài đọc
-        function adjustFont() {
-            fontSizeLevel = (fontSizeLevel + 1) % 3;
-            if (fontSizeLevel === 0) chapText.style.fontSize = "0.95rem";
-            if (fontSizeLevel === 1) chapText.style.fontSize = "1.05rem";
-            if (fontSizeLevel === 2) chapText.style.fontSize = "1.25rem";
-        }
-
-        // Tính năng đọc văn bản tự động bằng giọng nói của trình duyệt (Speech Synthesis)
-        function readByVoice() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                audio.pause(); // Tạm dừng nhạc nền nếu có
-                playIcon.classList.replace('fa-pause', 'fa-play');
-                
-                const utterance = new SpeechSynthesisUtterance(storyData[currentIndex].text);
-                utterance.lang = 'vi-VN';
-                utterance.rate = 1.0; // Tốc độ đọc
-                window.speechSynthesis.speak(utterance);
-            } else {
-                alert("Trình duyệt của bạn không hỗ trợ tính năng đọc giọng nói.");
-            }
-        }
-
-        // Cập nhật thanh tiến trình audio
+        // Thanh tiến trình audio
         audio.addEventListener('timeupdate', (e) => {
             const { currentTime, duration } = e.target;
             if (duration) {
-                progressFill.style.width = `${(currentTime / duration) * 100}%`;
+                document.getElementById('progress-fill').style.width = `${(currentTime / duration) * 100}%`;
                 
                 let curMin = Math.floor(currentTime / 60);
                 let curSec = Math.floor(currentTime % 60);
@@ -447,14 +438,13 @@
         });
 
         function seekAudio(e) {
-            const width = progressBar.clientWidth;
+            const width = document.getElementById('progress-bar').clientWidth;
             audio.currentTime = (e.offsetX / width) * audio.duration;
         }
 
         audio.addEventListener('ended', nextChapter);
 
-        // Khởi chạy lần đầu
-        loadChapter();
+        renderHomeList();
     </script>
 </body>
 </html>
