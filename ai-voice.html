@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice Reader - Trình Đọc Sách & Truyện Thông Minh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; padding-bottom: 50px; }
+        
+        header { background-color: #1e293b; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+        .logo { display: flex; align-items: center; gap: 8px; color: #38bdf8; font-weight: 700; font-size: 1.1rem; }
+        
+        .container { max-width: 700px; margin: 20px auto; padding: 0 15px; }
+
+        .ai-card {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+        }
+
+        h2 { font-size: 1.15rem; color: #f8fafc; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        h2 i { color: #38bdf8; }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 10px;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            resize: vertical;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        textarea:focus { border-color: #38bdf8; }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        select, input[type="range"] {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #f8fafc;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .btn-speak {
+            background: #0284c7;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+        }
+        .btn-speak:hover { background: #0ea5e9; }
+        .btn-speak.stop { background: #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+        .features-list div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .features-list i { color: #38bdf8; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo"><i class="fa-solid fa-waveform-lines"></i> AI Voice Studio</div>
+        <a href="index.html" style="color: #94a3b8; text-decoration: none; font-size: 0.9rem;"><i class="fa-solid fa-house"></i> Trang chủ</a>
+    </header>
+
+    <div class="container">
+        <div class="ai-card">
+            <h2><i class="fa-solid fa-microphone-lines"></i> Chuyển Văn Bản Thành Giọng Nói AI</h2>
+            
+            <textarea id="text-input" placeholder="Nhập hoặc dán nội dung chương truyện, văn bản tiếng Việt vào đây...">Linh khí trời đất bỗng nhiên biến đổi, dòng năng lượng cuồn cuộn đổ về từ hư không mở ra một kỷ nguyên mới đầy rẫy thử thách và cơ hội cho nhân loại.</textarea>
+
+            <div class="control-grid">
+                <div class="control-group">
+                    <label>Chọn Giọng Đọc (Voice)</label>
+                    <select id="voice-select">
+                        <option value="">Đang tải giọng đọc...</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label>Tốc Độ Đọc: <span id="speed-val">1.0</span>x</label>
+                    <input type="range" id="rate-range" min="0.5" max="2" step="0.1" value="1" oninput="updateSpeed(this.value)">
+                </div>
+            </div>
+
+            <button class="btn-speak" id="speak-btn" onclick="toggleSpeech()">
+                <i class="fa-solid fa-play" id="play-icon"></i> <span id="btn-text">Phát Giọng Đọc AI</span>
+            </button>
+        </div>
+
+        <div class="ai-card">
+            <h2><i class="fa-solid fa-bolt"></i> Tính Năng Nổi Bật</h2>
+            <div class="features-list">
+                <div><i class="fa-solid fa-check"></i> Tổng hợp giọng nói tiếng Việt tự nhiên trực tiếp trên trình duyệt</div>
+                <div><i class="fa-solid fa-check"></i> Tùy chỉnh linh hoạt tốc độ đọc và các gói giọng đọc khác nhau</div>
+                <div><i class="fa-solid fa-check"></i> Tối ưu hóa giao diện tối (Dark Mode) chuẩn phong cách AI Platform</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const synth = window.speechSynthesis;
+        const textInput = document.getElementById('text-input');
+        const voiceSelect = document.getElementById('voice-select');
+        const rateRange = document.getElementById('rate-range');
+        const speedVal = document.getElementById('speed-val');
+        const speakBtn = document.getElementById('speak-btn');
+        const playIcon = document.getElementById('play-icon');
+        const btnText = document.getElementById('btn-text');
+
+        let voices = [];
+
+        function populateVoices() {
+            voices = synth.getVoices();
+            voiceSelect.innerHTML = '';
+            
+            // Lọc ưu tiên giọng tiếng Việt
+            voices.forEach((voice, i) => {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${voice.name} (${voice.lang})`;
+                if (voice.lang.includes('vi') || voice.lang.includes('VI')) {
+                    option.selected = true;
+                }
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        populateVoices();
+        if (synth.onvoiceschanged !== undefined) {
+            synth.onvoiceschanged = populateVoices;
+        }
+
+        function updateSpeed(val) {
+            speedVal.textContent = val;
+        }
+
+        function toggleSpeech() {
+            if (synth.speaking) {
+                synth.cancel();
+                resetButton();
+                return;
+            }
+
+            if (textInput.value !== '') {
+                const utterThis = new SpeechSynthesisUtterance(textInput.value);
+                const selectedVoiceIndex = voiceSelect.value;
+                if (voices[selectedVoiceIndex]) {
+                    utterThis.voice = voices[selectedVoiceIndex];
+                }
+                utterThis.rate = parseFloat(rateRange.value);
+
+                utterThis.onend = function () {
+                    resetButton();
+                };
+
+                utterThis.onerror = function () {
+                    resetButton();
+                };
+
+                speakBtn.className = "btn-speak stop";
+                playIcon.className = "fa-solid fa-square";
+                btnText.textContent = "Dừng Phát";
+                synth.speak(utterThis);
+            }
+        }
+
+        function resetButton() {
+            speakBtn.className = "btn-speak";
+            playIcon.className = "fa-solid fa-play";
+            btnText.textContent = "Phát Giọng Đọc AI";
+        }
+    </script>
+</body>
+</html>
